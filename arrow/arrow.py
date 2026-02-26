@@ -702,8 +702,10 @@ class Arrow:
         """
 
         tzinfo = cls._get_tzinfo(start.tzinfo if tz is None else tz)
-        start = cls.fromdatetime(start, tzinfo).span(frame, exact=exact)[0]
-        end = cls.fromdatetime(end, tzinfo)
+        start = cls.fromdatetime(cls._get_datetime(start), tzinfo).span(
+            frame, exact=exact
+        )[0]
+        end = cls.fromdatetime(cls._get_datetime(end), tzinfo)
         _range = cls.range(frame, start, end, tz, limit)
         if not exact:
             for r in _range:

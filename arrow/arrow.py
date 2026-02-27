@@ -17,6 +17,7 @@ from time import struct_time
 from typing import (
     Any,
     ClassVar,
+    Dict,
     Final,
     Generator,
     Iterable,
@@ -1383,8 +1384,8 @@ class Arrow:
         current_time = self.fromdatetime(self._datetime)
 
         # Create an object containing the relative time info
-        time_object_info = dict.fromkeys(
-            ["seconds", "minutes", "hours", "days", "weeks", "months", "years"], 0
+        time_object_info: Dict[str, float] = dict.fromkeys(
+            ["seconds", "minutes", "hours", "days", "weeks", "months", "years"], 0.0
         )
 
         # Create an object representing if unit has been seen
@@ -1426,8 +1427,10 @@ class Arrow:
                 # If no number matches
                 # Need for absolute value as some locales have signs included in their objects
                 if not num_match:
-                    change_value = (
-                        1 if not time_delta.isnumeric() else abs(int(time_delta))
+                    change_value: float = (
+                        1.0
+                        if not time_delta.isnumeric()
+                        else float(abs(int(time_delta)))
                     )
                 else:
                     change_value = float(num_match.group().replace(",", "."))
